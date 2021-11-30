@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="GetMaterialsSeq" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <log level="custom">
+        <property name="Message" value="Doctor records sync task running."/>
+    </log>
+    <header name="Action" scope="default" value="urn:GetMaterial"/>
+    <payloadFactory description="Request payload to send to data service endpoint" media-type="xml">
+        <format>
+            <dat:GetMaterial xmlns:dat="http://ws.wso2.org/dataservice"/>
+        </format>
+        <args/>
+    </payloadFactory>
+    <call>
+        <endpoint key="GetMaterialsEP"/>
+    </call>
+    <log level="custom">
+        <property expression="$body/*" name="RecordMaterial"/>
+    </log>
+    <property expression="$body/*" name="symbol" scope="default" type="STRING"/>
+    <property expression="//dat:Material/dat:Id" name="materialId" scope="default" type="STRING" xmlns:dat="http://ws.wso2.org/dataservice"/>
+    <log level="custom">
+        <property expression="get-property('materialId')" name="materialId"/>
+    </log>
+    <header name="Action" scope="default" value="urn:request_box"/>
+    <payloadFactory description="Request payload to send to data service endpoint" media-type="xml">
+        <format>
+            <dat:request_box xmlns:dat="http://ws.wso2.org/dataservice">
+                <dat:GetPackage>
+                    <idList>$1</idList>
+                </dat:GetPackage>
+            </dat:request_box>
+        </format>
+        <args>
+            <arg evaluator="xml" expression="get-property('materialId')"/>
+        </args>
+    </payloadFactory>
+    <call>
+        <endpoint key="GetMaterialsEP"/>
+    </call>
+    <log level="custom">
+        <property expression="//dat:Package" name="RecordPackage" xmlns:dat="http://ws.wso2.org/dataservice"/>
+    </log>
+    <log level="custom">
+        <property expression="get-property('symbol')" name="symbol"/>
+    </log>
+    <enrich>
+        <source clone="true" xpath="get-property('symbol')"/>
+        <target action="remove" type="body"/>
+    </enrich>
+    <log level="custom">
+        <property expression="$body/*" name="Test"/>
+    </log>
+</sequence>

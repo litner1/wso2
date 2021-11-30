@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="GetMaterialsSeq" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <log level="custom">
+        <property name="Message" value="Doctor records sync task running."/>
+    </log>
+    <header name="Action" scope="default" value="urn:GetMaterial"/>
+    <payloadFactory description="Request payload to send to data service endpoint" media-type="xml">
+        <format>
+            <dat:GetMaterial xmlns:dat="http://ws.wso2.org/dataservice"/>
+        </format>
+        <args/>
+    </payloadFactory>
+    <call>
+        <endpoint key="GetMaterialsEP"/>
+    </call>
+    <log level="custom">
+        <property expression="/*" name="Record"/>
+    </log>
+    <property expression="/*" name="symbol" scope="default" type="STRING"/>
+    <log level="custom">
+        <property expression="get-property('symbol')" name="symbol"/>
+    </log>
+</sequence>

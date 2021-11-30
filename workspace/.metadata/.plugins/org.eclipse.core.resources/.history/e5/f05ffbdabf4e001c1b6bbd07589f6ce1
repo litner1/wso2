@@ -1,0 +1,24 @@
+<data enableBatchRequests="true" enableBoxcarring="true" name="Database" serviceGroup="" serviceNamespace="">
+  <description />
+  <query id="GetMaterial" useConfig="Database">
+    <sql>SELECT * FROM material LIMIT 1</sql>
+    <result element="Material" rowName="id">
+      <element column="id" name="Id" xsdType="xs:integer" />
+      <element column="number" name="Number" xsdType="xs:string" />
+      <element column="type" name="Type" xsdType="xs:string" />
+      <element column="name" name="Name" xsdType="xs:string" />
+      <element column="description" name="Description" xsdType="xs:string" />
+      <element column="is_deleted" name="IsDeleted" xsdType="xs:boolean" />
+    </result>
+  </query>
+  <operation name="GetMaterial">
+    <call-query href="GetMaterial" />
+  </operation>
+  <config id="Database">
+    <property name="driverClassName">com.mysql.cj.jdbc.Driver</property>
+    <property name="url">jdbc:mysql://gordon:3306/camel_db</property>
+    <property name="username">root</property>
+    <property name="password">admin</property>
+    <property name="dynamicUserAuthClass"/>
+  </config>
+</data>

@@ -1,0 +1,19 @@
+<data enableBatchRequests="true" enableBoxcarring="true" name="Database" serviceGroup="" serviceNamespace="">
+  <description />
+  <query id="ReadDoctors" useConfig="Database">
+    <sql>SELECT * FROM material LIMIT 1</sql>
+    <result element="Material" rowName="id">
+      <element column="id" name="Id" xsdType="xs:integer" />
+    </result>
+  </query>
+  <operation name="ReadDoctors">
+    <call-query href="ReadDoctors" />
+  </operation>
+  <config id="Database">
+    <property name="driverClassName">com.mysql.cj.jdbc.Driver</property>
+    <property name="url">jdbc:mysql://gordon:3306/camel_db</property>
+    <property name="username">root</property>
+    <property name="password">admin</property>
+    <property name="dynamicUserAuthClass"/>
+  </config>
+</data>
